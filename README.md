@@ -35,8 +35,15 @@ mimo-tank-pid-control/
 │   ├── visualization/
 │   └── legacy/
 ├── figures/
-├── results/
-└── docs/
+│   ├── controller_temperature_comparison.png
+│   ├── setpoint_tracking_zoom.png
+│   ├── disturbance_rejection_zoom.png
+│   ├── heater_power_comparison_kw.png
+│   ├── heater_power_setpoint_zoom.png
+│   └── heater_power_disturbance_zoom.png
+│
+└── results/
+    └── controller_comparison_metrics.csv
 ```
 
 ## Usage
@@ -53,6 +60,8 @@ This runs the controller comparison and saves:
 - `figures/setpoint_tracking_zoom.png`
 - `figures/disturbance_rejection_zoom.png`
 - `figures/heater_power_comparison_kw.png`
+- `figures/heater_power_setpoint_zoom.png`
+- `figures/heater_power_disturbance_zoom.png`
 - `results/controller_comparison_metrics.csv`
 
 To run the Lambda anti-windup comparison:
@@ -65,6 +74,19 @@ analyze_anti_windup()
 
 The `src/legacy/` folder contains the original project scripts. The cleaned implementation uses modular functions and parameter structures instead of duplicated script logic and global variables.
 
+
+## Results
+
+The cleaned MATLAB implementation automatically runs all controller simulations, saves the comparison metrics to `results/controller_comparison_metrics.csv`, and exports the response plots to the `figures/` directory.
+
+The evaluated scenario includes:
+
+1. A temperature setpoint step from `45°C` to `50°C` at `t = 500 s`.
+2. An inlet-temperature disturbance from `25°C` to `20°C` at `t = 2500 s`.
+3. Closed-loop comparison of seven classical PID tuning methods.
+
+### Quantitative Controller Comparison
+
 | Controller | Peak Temp. (°C) | Overshoot (°C) | Disturbance Min. (°C) | Disturbance Dip (°C) | Settling Time (s) | Final Temp. (°C) |
 |---|---:|---:|---:|---:|---:|---:|
 | Ziegler–Nichols PID | 51.634 | 1.634 | 49.972 | 0.028 | 154.24 | 50.000 |
@@ -75,20 +97,60 @@ The `src/legacy/` folder contains the original project scripts. The cleaned impl
 | Haalman | 50.119 | 0.119 | 49.847 | 0.153 | 2522.10 | 49.993 |
 | AMIGO | 50.242 | 0.242 | 49.789 | 0.211 | 2398.30 | 50.000 |
 
-## Results and Visualizations
+### Visual Results
 
-### Full Controller Comparison
+#### Full Temperature Response
 
 ![Controller temperature comparison](figures/controller_temperature_comparison.png)
 
-### Setpoint Tracking Detail
+This plot shows the complete closed-loop simulation, including the initial condition, setpoint-tracking interval, and disturbance-rejection interval.
+
+#### Setpoint Tracking Detail
 
 ![Setpoint tracking zoom](figures/setpoint_tracking_zoom.png)
 
-### Disturbance Rejection Detail
+This zoomed plot highlights the response after the temperature setpoint changes from `45°C` to `50°C`.
+
+#### Disturbance Rejection Detail
 
 ![Disturbance rejection zoom](figures/disturbance_rejection_zoom.png)
 
-### Heater Power Control Action
+This zoomed plot shows how each controller reacts when the inlet temperature drops from `25°C` to `20°C`.
+
+#### Heater Power Response
 
 ![Heater power comparison](figures/heater_power_comparison_kw.png)
+
+This plot compares the heater power control action for all tuning methods. The power is shown in kilowatts for readability.
+
+#### Heater Power During Setpoint Tracking
+
+![Heater power setpoint zoom](figures/heater_power_setpoint_zoom.png)
+
+This zoomed plot shows actuator effort during the setpoint-tracking phase.
+
+#### Heater Power During Disturbance Rejection
+
+![Heater power disturbance zoom](figures/heater_power_disturbance_zoom.png)
+
+This zoomed plot shows how the controllers increase heater power to compensate for the inlet-temperature disturbance.
+
+## Discussion
+
+The results show a clear trade-off between response speed, overshoot, disturbance rejection, and actuator effort.
+
+Ziegler–Nichols PID achieved the fastest settling time among the tested methods, with a settling time of approximately `154.24 s`. However, it also produced the largest overshoot, reaching a peak temperature of `51.634°C`, corresponding to an overshoot of `1.634°C`.
+
+Cohen–Coon also produced a fast response, with a settling time of approximately `181.57 s`, but it remained aggressive and reached a peak temperature of `51.327°C`.
+
+CHR 0% Overshoot produced the smallest overshoot among the tested methods, with only `0.109°C` overshoot. However, this came at the cost of a much longer settling time of approximately `2312 s`.
+
+Lambda tuning, Maximally Flat, Haalman, and AMIGO produced smoother responses with relatively low overshoot, but their settling times were longer than Ziegler–Nichols and Cohen–Coon. Among these smoother methods, Haalman showed a balanced response with low overshoot and moderate disturbance rejection.
+
+For disturbance rejection, Ziegler–Nichols PID and Cohen–Coon showed the smallest temperature dips after the inlet-temperature disturbance. Lambda tuning showed the largest disturbance dip for the selected value of λ, indicating slower recovery under this configuration.
+
+Overall, the comparison demonstrates that no single tuning method is universally best. The appropriate controller depends on the design objective:
+
+- Use aggressive tuning when fast tracking is more important.
+- Use conservative tuning when overshoot reduction and smooth actuator behavior are more important.
+- Evaluate actuator effort alongside temperature response, especially for industrial systems with physical saturation limits.

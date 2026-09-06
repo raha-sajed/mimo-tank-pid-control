@@ -29,6 +29,8 @@ plot_temperature_response(simulations, params, fullfile(figuresDir, 'controller_
 plot_temperature_response(simulations, params, fullfile(figuresDir, 'setpoint_tracking_zoom.png'), mode="setpoint", showMarkers=true);
 plot_temperature_response(simulations, params, fullfile(figuresDir, 'disturbance_rejection_zoom.png'), mode="disturbance", showMarkers=true);
 plot_actuator_response(simulations, params, fullfile(figuresDir, 'heater_power_comparison_kw.png'));
+plot_actuator_zoom(simulations, params, fullfile(figuresDir, 'heater_power_setpoint_zoom.png'), mode="setpoint");
+plot_actuator_zoom(simulations, params, fullfile(figuresDir, 'heater_power_disturbance_zoom.png'), mode="disturbance");
 
 disp(resultsTable);
 fprintf('\nSaved results to: %s\n', resultsDir);
