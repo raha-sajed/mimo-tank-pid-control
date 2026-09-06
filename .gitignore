@@ -1,0 +1,37 @@
+# MATLAB autosave and temporary files
+*.asv
+*.m~
+*.autosave
+
+# MATLAB generated files
+*.mex*
+*.slxc
+*.mlappinstall
+*.mltbx
+*.mat
+
+# Simulink generated folders
+slprj/
+*_ert_rtw/
+*_grt_rtw/
+codegen/
+
+# MATLAB cache / reports
+*.log
+*.tmp
+
+# Figures generated during experimentation
+*.fig
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# Archive files
+*.zip
+*.rar
+*.7z
