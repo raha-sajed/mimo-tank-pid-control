@@ -154,3 +154,18 @@ Overall, the comparison demonstrates that no single tuning method is universally
 - Use aggressive tuning when fast tracking is more important.
 - Use conservative tuning when overshoot reduction and smooth actuator behavior are more important.
 - Evaluate actuator effort alongside temperature response, especially for industrial systems with physical saturation limits.
+## Requirements
+
+This project requires MATLAB and the Control System Toolbox.
+
+For full environment details, see [`requirements.md`](requirements.md).
+
+## License
+
+This project is licensed under the terms provided in the [`LICENSE`](LICENSE) file.
+
+## Author
+
+Raha Sajed
+
+Electrical Engineering / Control Systems
