@@ -82,7 +82,7 @@ The cleaned MATLAB implementation automatically runs all controller simulations,
 The evaluated scenario includes:
 
 1. A temperature setpoint step from `45°C` to `50°C` at `t = 500 s`.
-2. An inlet-temperature disturbance from `25°C` to `20°C` at `t = 2500 s`.
+2. A cold-inlet disturbance is introduced at `t = 2500 s` by reducing the inlet water temperature from `25°C` to `20°C`.
 3. Closed-loop comparison of seven classical PID tuning methods.
 
 ### Quantitative Controller Comparison
