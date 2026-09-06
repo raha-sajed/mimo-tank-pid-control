@@ -1,5 +1,5 @@
 % Industrial Control Project - MIMO Tank Level and Temperature Control
-% Author: Fatemeh Sadat Sajed
+% Author:  Raha Sajed
 clear; clc; close all;
 
 %% Step 1: System Parameters & Operating Points

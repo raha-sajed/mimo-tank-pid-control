@@ -1,5 +1,4 @@
-% Industrial Control Project - Lambda Tuning PID Implementation
-% Author: Fatemeh Sadat Sajed
+
 clear; clc; close all;
 
 %% PART 1: System Constants & Baseline Setup

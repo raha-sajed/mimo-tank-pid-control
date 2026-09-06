@@ -1,5 +1,4 @@
 % Methods: ZN, CHR, Cohen-Coon, Lambda, Maximally Flat, Haalman, AMIGO
-% Author: Fatemeh Sadat Sajed
 clear; clc; close all;
 
 %% PART 1: System Constants & Baseline Setup
